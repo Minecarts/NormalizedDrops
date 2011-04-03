@@ -1,13 +1,13 @@
-package com.minecarts.templateplugin;
+package com.minecarts.normalizeddrops;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public abstract class CommandHandler implements CommandExecutor {
-    protected final TemplatePlugin plugin;
+    protected final NormalizedDrops plugin;
 
-    public CommandHandler(TemplatePlugin plugin) {
+    public CommandHandler(NormalizedDrops plugin) {
         this.plugin = plugin;
     }
     

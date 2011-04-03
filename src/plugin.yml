@@ -1,11 +1,11 @@
-name: Template Plugin
-main: com.minecarts.templateplugin.TemplatePlugin
+name: NormalizedDrops
+main: com.minecarts.normalizeddrops.NormalizedDrops
 version: 1.0.0
 website: http://minecarts.com
 author: Verrier
 description: >
-             A description of your plugin
+             Improve the fairness of drops and make PvE on a PvP server more worthwhile
 commands:
-  test:
-    description: Do the test feature!
-    usage: /<command>
+  ndrop:
+    description: Main command to interact with NormalizeDdrops 
+    usage: /<command> [reload]
