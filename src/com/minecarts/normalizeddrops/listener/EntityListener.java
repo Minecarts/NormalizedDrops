@@ -5,12 +5,12 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.entity.*;
 import org.bukkit.util.config.Configuration;
 
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.Random;
 
 public class EntityListener extends org.bukkit.event.entity.EntityListener{
-    private Vector<EntityDeathBox> nearbyDeaths = new Vector<EntityDeathBox>();
+    private ArrayList<EntityDeathBox> nearbyDeaths = new ArrayList<EntityDeathBox>();
     
     private int minDeaths, maxDeaths, timeFactor; 
     private double radius;
