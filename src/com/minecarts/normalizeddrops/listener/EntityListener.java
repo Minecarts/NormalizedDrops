@@ -18,8 +18,6 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener{
 
     private final Random generator = new Random();
     
-    public EntityListener(){
-    }
     public void setConfigValues(Configuration config){
         this.minDeaths = config.getInt("minDeaths", 7);
         this.maxDeaths = config.getInt("maxDeaths", 15);
@@ -100,8 +98,6 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener{
         }
         
         public boolean contains(EntityDeathPoint p){
-           // System.out.println(p);
-           // System.out.println(this);
             if(p.x <= xMin || p.x >= xMax) { return false; }
             if(p.y <= yMin || p.y >= yMax) { return false; }
             return p.z > zMin && p.z < zMax;
