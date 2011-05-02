@@ -60,7 +60,7 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener{
                 int deathCount = getNearbyDeathCount(p);
                 if(deathCount > r){
                     if(this.debug){
-                        System.out.println(String.format("[NormalizedDrops] Normalized drop at %.2f,%.2f,%.2f (Entity: %s, NearbyDeaths: %s > RND: %s, TrackerSize: %s)",p.x,p.y,p.z,deathCount,r,e.getEntity().toString(),nearbyDeaths.size()));
+                        System.out.println(String.format("[NormalizedDrops] Normalized drop at %.2f,%.2f,%.2f (Entity: %s, NearbyDeaths: %s > RND: %s, TrackerSize: %s)",p.x,p.y,p.z,e.getEntity().toString(),deathCount,r,nearbyDeaths.size()));
                     }
                     e.getDrops().clear();
                     return;
