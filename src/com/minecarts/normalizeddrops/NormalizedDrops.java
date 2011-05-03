@@ -30,7 +30,7 @@ public class NormalizedDrops extends org.bukkit.plugin.java.JavaPlugin{
         this.entityListener.setConfigValues(config);
 
         //Events
-        pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
+        pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.High, this);
 
         //Commands
         getCommand("ndrop").setExecutor(new MainCommand(this));
