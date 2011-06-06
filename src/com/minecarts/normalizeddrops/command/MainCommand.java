@@ -17,8 +17,7 @@ public class MainCommand extends CommandHandler{
         if(args.length == 1 && args[0].equalsIgnoreCase("reload")){
             //Reload the config
             if(sender.isOp() || sender instanceof ConsoleCommandSender){
-                plugin.config.load();
-                plugin.entityListener.setConfigValues(plugin.config);
+                plugin.entityListener.setConfig(plugin.getConfiguration());
                 sender.sendMessage(plugin.pdf.getName() + " configuration reloaded.");
             }
             return true;

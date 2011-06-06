@@ -15,22 +15,19 @@ public class NormalizedDrops extends org.bukkit.plugin.java.JavaPlugin{
     
     public final Logger log = Logger.getLogger("com.minecarts.normalizeddrops");
     public EntityListener entityListener;
-    public Configuration config;
     public PluginDescriptionFile pdf;
 
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
         this.pdf = getDescription();
-        
-        //Load config
-        this.config = getConfiguration();
 
         //Listeners
         this.entityListener = new EntityListener();
-        this.entityListener.setConfigValues(config);
+        this.entityListener.setConfig(getConfiguration());
 
         //Events
         pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.High, this);
+        pm.registerEvent(Event.Type.CREATURE_SPAWN, this.entityListener, Event.Priority.Normal, this);
 
         //Commands
         getCommand("ndrop").setExecutor(new MainCommand(this));
