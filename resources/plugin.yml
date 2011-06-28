@@ -1,0 +1,11 @@
+name: NormalizedDrops
+main: com.minecarts.normalizeddrops.NormalizedDrops
+version: ${pom.version}
+website: http://minecarts.com
+author: Verrier
+description: >
+             Improve the fairness of drops and make PvE on a PvP server more worthwhile
+commands:
+  ndrop:
+    description: Main command to interact with NormalizeDdrops 
+    usage: /<command> [reload]

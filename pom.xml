@@ -6,6 +6,12 @@
   <name>NormalizedDrops</name>
   <url>http://www.minecarts.com</url>
   <build>
+      <resources>
+          <resource>
+              <directory>src</directory>
+              <filtering>true</filtering>
+          </resource>
+      </resources>
       <sourceDirectory>${basedir}/src</sourceDirectory>
       <plugins>
           <plugin>	
