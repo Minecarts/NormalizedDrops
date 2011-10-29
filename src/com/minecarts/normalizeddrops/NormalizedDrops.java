@@ -26,11 +26,12 @@ public class NormalizedDrops extends org.bukkit.plugin.java.JavaPlugin{
         this.entityListener.setConfig(getConfiguration());
 
         //Events
-        pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.High, this);
+        pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Event.Priority.Monitor, this);
+        pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.CREATURE_SPAWN, this.entityListener, Event.Priority.Normal, this);
 
         //Commands
-        getCommand("ndrop").setExecutor(new MainCommand(this));
+        getCommand("normalizeddrops").setExecutor(new MainCommand(this));
 
         log.info("[" + pdf.getName() + "] version " + pdf.getVersion() + " enabled.");
     }

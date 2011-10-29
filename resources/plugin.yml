@@ -6,6 +6,7 @@ author: Verrier
 description: >
              Improve the fairness of drops and make PvE on a PvP server more worthwhile
 commands:
-  ndrop:
+  moralizeddrops:
+    aliases: [ndrop, ndrops, nd]
     description: Main command to interact with NormalizeDdrops 
     usage: /<command> [reload]
