@@ -138,7 +138,7 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
                 }
                 
                 // normalize!
-                event.setDroppedExp(Math.round(exp * (totalDamage / playerDamage)));
+                event.setDroppedExp(totalDamage > 0 && playerDamage > 0 ? Math.round(exp * (playerDamage / totalDamage)) : 0);
             }
         }
     }
