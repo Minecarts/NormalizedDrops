@@ -128,6 +128,8 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
             if(exp > 0 && history != null) {
                 int totalDamage = 0;
                 int playerDamage = 0;
+                Location loc = entity.getLocation();
+                String world = loc.getWorld().getName();
                 
                 for(EntityDamageEvent damageEvent : history) {
                     totalDamage += damageEvent.getDamage();
