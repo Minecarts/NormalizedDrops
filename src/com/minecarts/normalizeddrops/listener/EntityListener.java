@@ -141,9 +141,9 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
                             playerDamage += damageEvent.getDamage();
                         }
                     }
-                    if(config.getBoolean(world + ".debug", true)) {
-                        System.out.println(String.format("[NormalizedDrops] Normalized exp in %s @ %.2f,%.2f,%.2f", world, loc.getX(), loc.getY(), loc.getZ()));
-                    }
+                }
+                if(config.getBoolean(world + ".debug", true)) {
+                    System.out.println(String.format("[NormalizedDrops] Normalized exp in %s @ %.2f,%.2f,%.2f", world, loc.getX(), loc.getY(), loc.getZ()));
                 }
                 
                 // normalize!
