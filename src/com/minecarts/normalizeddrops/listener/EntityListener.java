@@ -15,6 +15,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Explosive;
+import org.bukkit.entity.Animals;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -90,8 +93,9 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
     public void onEntityDeath(EntityDeathEvent event) {
         final Entity entity = event.getEntity();
         
-        // don't normalize drops for human entities
+        // don't normalize drops for human entities or animals
         if(entity instanceof HumanEntity) return;
+        if(entity instanceof Animals) return;
         
         if(entity instanceof LivingEntity) {
             // normalize items dropped
@@ -124,6 +128,8 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
             if(exp > 0 && history != null) {
                 int totalDamage = 0;
                 int playerDamage = 0;
+                Location loc = entity.getLocation();
+                String world = loc.getWorld().getName();
                 
                 for(EntityDamageEvent damageEvent : history) {
                     totalDamage += damageEvent.getDamage();
@@ -131,10 +137,13 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
                     if(damageEvent instanceof EntityDamageByEntityEvent) {
                         Entity attacker = ((EntityDamageByEntityEvent) damageEvent).getDamager();
                         
-                        if(attacker instanceof Player || (attacker instanceof Tameable && ((Tameable) attacker).getOwner() instanceof Player)) {
+                        if(attacker instanceof Projectile || attacker instanceof Explosive || attacker instanceof LivingEntity) {
                             playerDamage += damageEvent.getDamage();
                         }
                     }
+                }
+                if(config.getBoolean(world + ".debug", true)) {
+                    System.out.println(String.format("[NormalizedDrops] Normalized exp in %s @ %.2f,%.2f,%.2f", world, loc.getX(), loc.getY(), loc.getZ()));
                 }
                 
                 // normalize!
