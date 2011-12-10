@@ -1,4 +1,9 @@
 ##NormalizedDrops
+
+This fork allows other damage events like arrows or other mobs to yield xp drops, also takes farm animals out of the picture. -ksh
+
+Original README:
+
 I wrote this plugin to provide a little method to nerf monster traps on the Minecarts.com PVP server. A sample configuration file is provided below. You can use /ndrop reload to reload the configuration file. Note: Reloading the plugins will clear the tracking history of nearby deaths.
 
 
