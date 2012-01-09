@@ -5,10 +5,10 @@ I wrote this plugin to provide a little method to nerf monster traps on the Mine
 
 
 ```YAML
-debug: false #Log debug messages when loot is normalized
+debug: false #Log debug messages when normalization occurs
 
-radius: 10 #How close entity deaths need to be before considered nearby (radius in blocks)
-minDeaths: 4 #Minimum number of allowed deaths before loot normalization
-maxDeaths: 17 #Any deaths more than this will be 0 drops, but also the closer this is to minDeaths, the rarer loot will be
-timeFactor: 600 #How long before deaths expire in seconds
+radius: 10 #How close entity events need to be before considered nearby (radius in blocks)
+minEvents: 4 #Minimum number of allowed events before normalization
+maxEvents: 17 #Any events more than this will cleared of drops, but also the closer this is to min, the rarer drops will be
+maxAge: 600 #How long before events expire in seconds
 ```
