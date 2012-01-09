@@ -8,11 +8,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Chicken;
+import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -108,6 +104,10 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
         
         // skip normalization for player drops
         if(entity instanceof Player) return;
+        
+        // configurable mob types
+        if(entity instanceof Animals && !plugin.getConfig().getBoolean("animals")) return;
+        if(entity instanceof Monster && !plugin.getConfig().getBoolean("monsters")) return;
         
         // is this check necessary?
         // we're in the death event, so it's assumed that the entity was living
