@@ -147,7 +147,7 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
                 if(totalDamage != playerDamage) {
                     int newExp = totalDamage > 0 && playerDamage > 0 ? Math.round(exp * (playerDamage / totalDamage)) : 0;
                     event.setDroppedExp(newExp);
-                    plugin.debug("Reduced experience drop from {0} to {1}", exp, newExp);
+                    plugin.debug("Reduced experience drop from {0} to {1} for {2} at {3}", exp, newExp, entity, entity.getLocation());
                 }
             }
         }
