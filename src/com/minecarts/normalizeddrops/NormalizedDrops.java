@@ -49,6 +49,7 @@ public class NormalizedDrops extends org.bukkit.plugin.java.JavaPlugin {
         EntityListener entityListener = new EntityListener(this);
         // register events
         pluginManager.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Event.Priority.Normal, this);
+        pluginManager.registerEvent(Event.Type.ITEM_SPAWN, entityListener, Event.Priority.Normal, this);
         pluginManager.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Event.Priority.Monitor, this);
         
         
@@ -82,6 +83,7 @@ public class NormalizedDrops extends org.bukkit.plugin.java.JavaPlugin {
         final FileConfiguration config = getConfig();
         
         debug = config.getBoolean("debug");
+        debug("Debug mode is ON!");
     }
     
     

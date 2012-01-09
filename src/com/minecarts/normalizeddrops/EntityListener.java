@@ -11,10 +11,15 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Chicken;
+import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
+
+import static org.bukkit.Material.*;
 
 
 public class EntityListener extends org.bukkit.event.entity.EntityListener {
@@ -23,7 +28,7 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
     
     private final Random random = new Random();
     private final HashMap<World, ArrayList<LocalEvent>> nearbyDeathTracker = new HashMap<World, ArrayList<LocalEvent>>();
-    private final HashMap<World, ArrayList<LocalEvent>> nearbyItemSpawnTracker = new HashMap<World, ArrayList<LocalEvent>>();
+    private final HashMap<World, ArrayList<LocalEvent>> nearbyEggTracker = new HashMap<World, ArrayList<LocalEvent>>();
     private final WeakHashMap<Entity, ArrayList<EntityDamageEvent>> damageTracker = new WeakHashMap<Entity, ArrayList<EntityDamageEvent>>();
     
     public EntityListener(NormalizedDrops plugin) {
@@ -42,7 +47,7 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
         while(itr.hasPrevious()) {
             LocalEvent event = (LocalEvent) itr.previous();
 
-            if(event.elapsed() > plugin.getConfig().getInt("timeFactor") * 1000) {
+            if(event.elapsed() > plugin.getConfig().getInt("maxAge") * 1000) {
                 // event expired, so clear the list up until this point
                 if(itr.previousIndex() >= 0) {
                     events.subList(0, itr.previousIndex()).clear();
@@ -51,13 +56,34 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
             }
             else {
                 // check if event is within radius of point
-                if(event.within(point, radius)) {
+                if(event.within(point, plugin.getConfig().getDouble("radius"))) {
                     count++;
                 }
            }
         }
         
         return count;
+    }
+    
+    private boolean normalize(HashMap<World, ArrayList<LocalEvent>> tracker, Event event, Location location) {
+        int nearby = getNearbyCount(tracker, location, plugin.getConfig().getDouble("radius"));
+        int r = random.nextInt(Math.max(1, plugin.getConfig().getInt("maxEvents"))) + plugin.getConfig().getInt("minEvents");
+
+        ArrayList<LocalEvent> events = tracker.get(location.getWorld());
+        if(events == null) {
+            events = new ArrayList<LocalEvent>();
+            tracker.put(location.getWorld(), events);
+        }
+
+        // normalization triggered
+        if(nearby > r) {
+            plugin.debug("Normalized at {0} (Nearby: {1} > Random: {2}, Tracker Size: {3})", location, nearby, r, events.size());
+            return true;
+        }
+        
+        // add local event to tracker
+        events.add(new LocalEvent(event, location));
+        return false;
     }
     
     
@@ -88,28 +114,11 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
         if(entity instanceof LivingEntity) {
             // normalize items dropped
             if(event.getDrops().size() > 0) {
-                Location point = entity.getLocation();
-                
-                int deathCount = getNearbyCount(nearbyDeathTracker, point, plugin.getConfig().getDouble("radius"));
-                int r = random.nextInt(plugin.getConfig().getInt("maxDeaths")) + plugin.getConfig().getInt("minDeaths");
-                
-                ArrayList<LocalEvent> nearbyDeaths = nearbyDeathTracker.get(point.getWorld());
-                if(nearbyDeaths == null) {
-                    nearbyDeaths = new ArrayList<LocalEvent>();
-                    nearbyDeathTracker.put(point.getWorld(), nearbyDeaths);
-                }
-                
-                // normalization triggered, clear drops
-                if(deathCount > r) {
+                if(normalize(nearbyDeathTracker, event, entity.getLocation())) {
+                    plugin.debug("Clearing drops for {0}: ", entity, event.getDrops());
                     event.getDrops().clear();
-                    plugin.debug("Normalized {0} drops in {1} @ {2},{3},{4} (NearbyDeaths: {5} > RND: {6}, TrackerSize: {7})", entity, point.getWorld(), point.getX(), point.getY(), point.getZ(), deathCount, r, nearbyDeaths.size());
-                    return;
                 }
-                
-                // add local event to tracker
-                nearbyDeaths.add(new LocalEvent(event, point));
             }
-            
             
             // normalize experience dropped
             int exp = event.getDroppedExp();
@@ -143,6 +152,22 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
     
     @Override
     public void onItemSpawn(ItemSpawnEvent event) {
+        Item item = (Item) event.getEntity();
+        
+        switch(item.getItemStack().getType()) {
+            case EGG:
+                // since ITEM_SPAWN has no causes, check if egg was laid by a nearby chicken
+                for(Entity entity : item.getNearbyEntities(0, 0, 0)) {
+                    if(entity instanceof Chicken) {
+                        if(normalize(nearbyEggTracker, event, entity.getLocation())) {
+                            plugin.debug("Cancelling egg spawn");
+                            event.setCancelled(true);
+                        }
+                        break;
+                    }
+                }                
+                break;
+        }
         
     }
     
