@@ -27,8 +27,8 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
     private final NormalizedDrops plugin;
     
     private final Random random = new Random();
-    private final HashMap<World, ArrayList<LocalEvent>> nearbyDeathTracker = new HashMap<World, ArrayList<LocalEvent>>();
-    private final HashMap<World, ArrayList<LocalEvent>> nearbyEggTracker = new HashMap<World, ArrayList<LocalEvent>>();
+    private final HashMap<World, ArrayList<LocalEvent>> deathTracker = new HashMap<World, ArrayList<LocalEvent>>();
+    private final HashMap<World, ArrayList<LocalEvent>> eggTracker = new HashMap<World, ArrayList<LocalEvent>>();
     private final WeakHashMap<Entity, ArrayList<EntityDamageEvent>> damageTracker = new WeakHashMap<Entity, ArrayList<EntityDamageEvent>>();
     
     public EntityListener(NormalizedDrops plugin) {
@@ -114,7 +114,7 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
         if(entity instanceof LivingEntity) {
             // normalize items dropped
             if(event.getDrops().size() > 0) {
-                if(normalize(nearbyDeathTracker, event, entity.getLocation())) {
+                if(normalize(deathTracker, event, entity.getLocation())) {
                     plugin.debug("Clearing drops for {0}: ", entity, event.getDrops());
                     event.getDrops().clear();
                 }
@@ -144,7 +144,11 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
                 }
                 
                 // normalize!
-                event.setDroppedExp(totalDamage > 0 && playerDamage > 0 ? Math.round(exp * (playerDamage / totalDamage)) : 0);
+                if(totalDamage != playerDamage) {
+                    int newExp = totalDamage > 0 && playerDamage > 0 ? Math.round(exp * (playerDamage / totalDamage)) : 0;
+                    event.setDroppedExp(newExp);
+                    plugin.debug("Reduced experience drop from {0} to {1}", exp, newExp);
+                }
             }
         }
     }
@@ -159,7 +163,7 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
                 // since ITEM_SPAWN has no causes, check if egg was laid by a nearby chicken
                 for(Entity entity : item.getNearbyEntities(0, 0, 0)) {
                     if(entity instanceof Chicken) {
-                        if(normalize(nearbyEggTracker, event, entity.getLocation())) {
+                        if(normalize(eggTracker, event, entity.getLocation())) {
                             plugin.debug("Cancelling egg spawn");
                             event.setCancelled(true);
                         }
