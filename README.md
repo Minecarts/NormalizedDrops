@@ -1,5 +1,7 @@
 ##NormalizedDrops
-I wrote this plugin to provide a little method to nerf monster traps on the Minecarts.com PVP server. A sample configuration file is provided below. You can use `/ndrop reload` to reload the configuration file.
+We found that on Minecarts.com, monster spawners and traps greatly devalue their loot and makes hunting trivial. While we still allow the use of spawners and traps, we created this plugin to normalize their drops to minimize economic damage.
+
+A sample configuration file is provided below. You can use `/ndrop reload` to reload the configuration file.
 
 **Note:** Reloading plugins with `/reload` will clear the tracking history.
 
