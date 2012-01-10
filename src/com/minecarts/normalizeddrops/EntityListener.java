@@ -115,8 +115,10 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
             // normalize items dropped
             if(event.getDrops().size() > 0) {
                 if(normalize(deathTracker, event, entity.getLocation())) {
-                    plugin.debug("Clearing drops for {0}: ", entity, event.getDrops());
                     event.getDrops().clear();
+                    event.setDroppedExp(0);
+                    plugin.debug("{0} drops ({1}) and exp ({2}) cleared", entity, event.getDrops(), event.getDroppedExp());
+                    return;
                 }
             }
             
@@ -147,7 +149,7 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
                 if(totalDamage != playerDamage) {
                     int newExp = totalDamage > 0 && playerDamage > 0 ? Math.round(exp * (playerDamage / totalDamage)) : 0;
                     event.setDroppedExp(newExp);
-                    plugin.debug("Reduced experience drop from {0} to {1} for {2} at {3}", exp, newExp, entity, entity.getLocation());
+                    plugin.debug("{0} exp drop reduced from {1} to {2} at {3}", entity, exp, newExp, entity.getLocation());
                 }
             }
         }
@@ -164,8 +166,9 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
                 for(Entity entity : item.getNearbyEntities(0, 0, 0)) {
                     if(entity instanceof Chicken) {
                         if(normalize(eggTracker, event, entity.getLocation())) {
-                            plugin.debug("Cancelling egg spawn");
                             event.setCancelled(true);
+                            plugin.debug("Egg spawn cancelled");
+                            return;
                         }
                         break;
                     }
