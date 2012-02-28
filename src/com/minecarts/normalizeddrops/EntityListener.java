@@ -9,6 +9,9 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.*;
+import org.bukkit.event.Listener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -18,7 +21,8 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import static org.bukkit.Material.*;
 
 
-public class EntityListener extends org.bukkit.event.entity.EntityListener {
+
+public class EntityListener implements Listener {
     
     private final NormalizedDrops plugin;
     
@@ -84,8 +88,8 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
     
     
     
-    @Override
-    public void onEntityDamage(EntityDamageEvent event) {
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void on(EntityDamageEvent event) {
         if(event.isCancelled()) return;
         
         ArrayList<EntityDamageEvent> history = damageTracker.get(event.getEntity());
@@ -98,8 +102,8 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
         history.add(event);
     }
     
-    @Override
-    public void onEntityDeath(EntityDeathEvent event) {
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void on(EntityDeathEvent event) {
         final Entity entity = event.getEntity();
         
         // skip normalization for player drops
@@ -156,8 +160,8 @@ public class EntityListener extends org.bukkit.event.entity.EntityListener {
     }
     
     
-    @Override
-    public void onItemSpawn(ItemSpawnEvent event) {
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void on(ItemSpawnEvent event) {
         Item item = (Item) event.getEntity();
         
         switch(item.getItemStack().getType()) {

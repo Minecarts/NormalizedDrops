@@ -44,13 +44,8 @@ public class NormalizedDrops extends org.bukkit.plugin.java.JavaPlugin {
         });
         
         
-        PluginManager pluginManager = getServer().getPluginManager();
-        // create listeners
-        EntityListener entityListener = new EntityListener(this);
         // register events
-        pluginManager.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Event.Priority.Normal, this);
-        pluginManager.registerEvent(Event.Type.ITEM_SPAWN, entityListener, Event.Priority.Normal, this);
-        pluginManager.registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Event.Priority.Monitor, this);
+        getServer().getPluginManager().registerEvents(new EntityListener(this), this);
         
         
         log("Version {0} enabled.", getDescription().getVersion());
