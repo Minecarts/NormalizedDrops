@@ -7,13 +7,12 @@ main: com.minecarts.normalizeddrops.NormalizedDrops
 version: ${pom.version}
 
 commands:
-  normalizeddrops:
-    aliases: [ndrop, ndrops, nd]
-    description: Primary command to interact with NormalizedDrops 
-    usage: /<command> [reload]
+    normalizeddrops:
+        aliases: [ndrop, ndrops, nd]
+        description: Primary command to interact with NormalizedDrops 
+        usage: /<command> [reload]
     
 permissions:
-  normalizeddrops:
-    reload:
-      description: Reload NormalizedDrops config.yml
-      default: op
+    normalizeddrops.reload:
+        description: Reload NormalizedDrops config.yml
+        default: op
